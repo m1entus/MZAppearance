@@ -40,6 +40,24 @@ static NSMutableDictionary *instanceOfClassesDictionary = nil;
     }
 }
 
+- (void)applyInvocationRecursivelyTo:(id)target upToSuperClass:(Class)superClass
+{
+    NSMutableArray *classes = [NSMutableArray array];
+    
+    // We now need to first set the properties of the superclass
+    for (Class class = [target class];
+         [class isSubclassOfClass:superClass] || class == superClass;
+         class = [class superclass]) {
+        [classes addObject:class];
+    }
+    
+    NSEnumerator *reverseClasses = [classes reverseObjectEnumerator];
+    
+    for (Class class in reverseClasses) {
+        [[MZApperance appearanceForClass:class] applyInvocationTo:target];
+    }
+}
+
 + (id)appearanceForClass:(Class)aClass
 {
     static dispatch_once_t onceToken;

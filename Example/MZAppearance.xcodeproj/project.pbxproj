@@ -19,8 +19,8 @@
 		0628413B17BFEC9B0098FD72 /* MainStoryboard_iPhone.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 0628413917BFEC9B0098FD72 /* MainStoryboard_iPhone.storyboard */; };
 		0628413E17BFEC9B0098FD72 /* MainStoryboard_iPad.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 0628413C17BFEC9B0098FD72 /* MainStoryboard_iPad.storyboard */; };
 		0628414117BFEC9B0098FD72 /* MZViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0628414017BFEC9B0098FD72 /* MZViewController.m */; };
-		0628414E17BFEF780098FD72 /* MZApperance.m in Sources */ = {isa = PBXBuildFile; fileRef = 0628414B17BFEF780098FD72 /* MZApperance.m */; };
-		0628414F17BFEF780098FD72 /* NSInvocation+Copy.m in Sources */ = {isa = PBXBuildFile; fileRef = 0628414D17BFEF780098FD72 /* NSInvocation+Copy.m */; };
+		062D29B117C0BD4200E9CF11 /* MZApperance.m in Sources */ = {isa = PBXBuildFile; fileRef = 062D29AE17C0BD4200E9CF11 /* MZApperance.m */; };
+		062D29B217C0BD4200E9CF11 /* NSInvocation+Copy.m in Sources */ = {isa = PBXBuildFile; fileRef = 062D29B017C0BD4200E9CF11 /* NSInvocation+Copy.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -41,10 +41,10 @@
 		0628413D17BFEC9B0098FD72 /* en */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = en; path = en.lproj/MainStoryboard_iPad.storyboard; sourceTree = "<group>"; };
 		0628413F17BFEC9B0098FD72 /* MZViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MZViewController.h; sourceTree = "<group>"; };
 		0628414017BFEC9B0098FD72 /* MZViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MZViewController.m; sourceTree = "<group>"; };
-		0628414A17BFEF780098FD72 /* MZApperance.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MZApperance.h; path = Source/MZApperance.h; sourceTree = SOURCE_ROOT; };
-		0628414B17BFEF780098FD72 /* MZApperance.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MZApperance.m; path = Source/MZApperance.m; sourceTree = SOURCE_ROOT; };
-		0628414C17BFEF780098FD72 /* NSInvocation+Copy.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "NSInvocation+Copy.h"; path = "Source/NSInvocation+Copy.h"; sourceTree = SOURCE_ROOT; };
-		0628414D17BFEF780098FD72 /* NSInvocation+Copy.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "NSInvocation+Copy.m"; path = "Source/NSInvocation+Copy.m"; sourceTree = SOURCE_ROOT; };
+		062D29AD17C0BD4200E9CF11 /* MZApperance.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MZApperance.h; path = ../../MZApperance/MZApperance.h; sourceTree = "<group>"; };
+		062D29AE17C0BD4200E9CF11 /* MZApperance.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MZApperance.m; path = ../../MZApperance/MZApperance.m; sourceTree = "<group>"; };
+		062D29AF17C0BD4200E9CF11 /* NSInvocation+Copy.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "NSInvocation+Copy.h"; path = "../../MZApperance/NSInvocation+Copy.h"; sourceTree = "<group>"; };
+		062D29B017C0BD4200E9CF11 /* NSInvocation+Copy.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "NSInvocation+Copy.m"; path = "../../MZApperance/NSInvocation+Copy.m"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -120,10 +120,10 @@
 		0628415017BFEF7A0098FD72 /* Source */ = {
 			isa = PBXGroup;
 			children = (
-				0628414A17BFEF780098FD72 /* MZApperance.h */,
-				0628414B17BFEF780098FD72 /* MZApperance.m */,
-				0628414C17BFEF780098FD72 /* NSInvocation+Copy.h */,
-				0628414D17BFEF780098FD72 /* NSInvocation+Copy.m */,
+				062D29AD17C0BD4200E9CF11 /* MZApperance.h */,
+				062D29AE17C0BD4200E9CF11 /* MZApperance.m */,
+				062D29AF17C0BD4200E9CF11 /* NSInvocation+Copy.h */,
+				062D29B017C0BD4200E9CF11 /* NSInvocation+Copy.m */,
 			);
 			name = Source;
 			sourceTree = "<group>";
@@ -199,8 +199,8 @@
 				0628412E17BFEC9B0098FD72 /* main.m in Sources */,
 				0628413217BFEC9B0098FD72 /* MZAppDelegate.m in Sources */,
 				0628414117BFEC9B0098FD72 /* MZViewController.m in Sources */,
-				0628414E17BFEF780098FD72 /* MZApperance.m in Sources */,
-				0628414F17BFEF780098FD72 /* NSInvocation+Copy.m in Sources */,
+				062D29B117C0BD4200E9CF11 /* MZApperance.m in Sources */,
+				062D29B217C0BD4200E9CF11 /* NSInvocation+Copy.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -333,6 +333,7 @@
 				0628414617BFEC9B0098FD72 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
