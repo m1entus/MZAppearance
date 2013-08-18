@@ -6,16 +6,16 @@
 //  Copyright (c) 2013 Michał Zaborowski. All rights reserved.
 //
 
-#import "MZApperance.h"
+#import "MZAppearance.h"
 
 static NSMutableDictionary *instanceOfClassesDictionary = nil;
 
-@interface MZApperance ()
+@interface MZAppearance ()
 @property (strong, nonatomic) Class mainClass;
 @property (strong, nonatomic) NSMutableArray *invocations;
 @end
 
-@implementation MZApperance
+@implementation MZAppearance
 
 - (id)initWithClass:(Class)thisClass
 {
@@ -54,7 +54,7 @@ static NSMutableDictionary *instanceOfClassesDictionary = nil;
     NSEnumerator *reverseClasses = [classes reverseObjectEnumerator];
     
     for (Class class in reverseClasses) {
-        [[MZApperance appearanceForClass:class] applyInvocationTo:target];
+        [[MZAppearance appearanceForClass:class] applyInvocationTo:target];
     }
 }
 

@@ -10,7 +10,7 @@
 
 #define MZ_APPEARANCE_SELECTOR UI_APPEARANCE_SELECTOR
 
-@protocol MZApperance <NSObject>
+@protocol MZAppearance <NSObject>
 
 /** 
  To customize the appearance of all instances of a class, send the relevant appearance modification messages to the appearance proxy for the class.
@@ -18,7 +18,7 @@
 + (id)appearance;
 @end
 
-@interface MZApperance : NSProxy
+@interface MZAppearance : NSProxy
 
 /** 
  Applies the appearance of all instances to the object. 
