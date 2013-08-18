@@ -7,7 +7,7 @@
 //
 
 #import "MZViewController.h"
-#import "MZApperance.h"
+#import "MZAppearance.h"
 
 @interface MZViewController ()
 
@@ -17,7 +17,7 @@
 
 + (id)appearance
 {
-    return [MZApperance appearanceForClass:[self class]];
+    return [MZAppearance appearanceForClass:[self class]];
 }
 
 - (void)viewDidLoad

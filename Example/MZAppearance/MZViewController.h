@@ -7,9 +7,9 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "MZApperance.h"
+#import "MZAppearance.h"
 
-@interface MZViewController : UIViewController <MZApperance>
+@interface MZViewController : UIViewController <MZAppearance>
 
 @property (nonatomic,strong) UIColor *customColor MZ_APPEARANCE_SELECTOR;
 @property (nonatomic,assign) CGFloat customFloat MZ_APPEARANCE_SELECTOR;
