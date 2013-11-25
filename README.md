@@ -22,7 +22,7 @@ Implement <MZAppearance> protocol method + (id)appearance, and call applyInvocat
 ``` objective-c
 + (id)appearance
 {
-    return [MZApperance appearanceForClass:[self class]];
+    return [MZAppearance appearanceForClass:[self class]];
 }
 
 - (void)viewDidLoad
