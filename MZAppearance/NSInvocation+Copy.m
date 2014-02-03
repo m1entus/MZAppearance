@@ -28,6 +28,9 @@ const char* jbb_removeObjCTypeQualifiers(const char *aType) {
 
     if (jbb_strCaseStartsWith(aType, "r") || jbb_strCaseStartsWith(aType, "n") || jbb_strCaseStartsWith(aType, "o") || jbb_strStartsWith(aType, "V")) {
         char *newString = (char *)malloc(sizeof(aType) - 1);
+        if (newString == NULL) {
+          return NULL;
+        }
         strncpy(newString, aType + 1, sizeof(aType) - 1);
         const char *returnString = jbb_removeObjCTypeQualifiers(newString);
         free(newString);
@@ -40,14 +43,18 @@ const char* jbb_removeObjCTypeQualifiers(const char *aType) {
 BOOL jbb_ObjCTypeStartsWith(const char *objCType, const char *targetChar) {
     const char *newObjCType = jbb_removeObjCTypeQualifiers(objCType);
 
-    return strncmp(newObjCType, targetChar, 1);
+    return newObjCType == NULL ? NO : strncmp(newObjCType, targetChar, 1);
 }
 
 BOOL jbb_areObjCTypesEqual(const char *lhs, const char *rhs) {
     const char *newLhs = jbb_removeObjCTypeQualifiers(lhs);
     const char *newRhs = jbb_removeObjCTypeQualifiers(rhs);
 
-    return strcmp(newLhs, newRhs) == 0;
+    if (newLhs == NULL || newRhs == NULL) {
+      return NO;
+    } else {
+      return strcmp(newLhs, newRhs) == 0;
+    }
 }
 
 @implementation NSInvocation (Copy)
@@ -163,6 +170,7 @@ BOOL jbb_areObjCTypesEqual(const char *lhs, const char *rhs) {
                 [invocation setArgument:&arg atIndex:index];
             } else {
                 NSAssert1(false, @"Unhandled ObjC Type (%s)", typeForArg);
+                return nil;
             }
             
         }
