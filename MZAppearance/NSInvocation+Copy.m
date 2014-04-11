@@ -4,57 +4,53 @@
 //
 //  Created by Michał Zaborowski on 17.08.2013.
 //  Copyright (c) 2013 Michał Zaborowski. All rights reserved.
-//
-// Code also pulled from https://github.com/jorbsd/JBBContinuations/blob/master/Classes/JBBObjectProxy.m
 
 #import "NSInvocation+Copy.h"
-#import <string.h>
 
-BOOL jbb_strStartsWith(const char *aString, const char *aPrefix) {
-    return strncmp(aPrefix, aString, strlen(aPrefix)) == 0;
+@interface NSString (Encoding)
+
+- (BOOL)mz_isFirstCharacterEqual:(NSString *)string;
+- (BOOL)mz_isFirstCharacterCaseInsensitiveEqual:(NSString *)string;
+- (NSString *)mz_stringByRemovingMethodEnodingQualifiers;
+
+@end
+
+@implementation NSString (Encoding)
+
+- (BOOL)mz_isFirstCharacterEqual:(NSString *)string
+{
+    if (self.length < 1 || string.length < 1) {
+        return NO;
+    }
+    return [[self substringToIndex:1] isEqualToString:[string substringToIndex:1]];
 }
 
-BOOL jbb_strCaseStartsWith(const char *aString, const char *aPrefix) {
-    return strncasecmp(aPrefix, aString, strlen(aPrefix)) == 0;
+- (BOOL)mz_isFirstCharacterCaseInsensitiveEqual:(NSString *)string
+{
+    if (self.length < 1 || string.length < 1) {
+        return NO;
+    }
+    return [[self substringToIndex:1] caseInsensitiveCompare:[string substringToIndex:1]] == NSOrderedSame;
 }
 
-const char* jbb_removeObjCTypeQualifiers(const char *aType) {
-    // get rid of the following ObjC Type Encoding qualifiers:
-    // r, n, N, o, O, R, V
-    //
-    // although it would be better not to hard code them they are
-    // discarded by @encode(), but present in -[NSMethodSignature methodReturnType]
-    // and -[NSMethodSignaure getArgumentTypeAtIndex:]
-
-    if (jbb_strCaseStartsWith(aType, "r") || jbb_strCaseStartsWith(aType, "n") || jbb_strCaseStartsWith(aType, "o") || jbb_strStartsWith(aType, "V")) {
-        char *newString = (char *)malloc(sizeof(aType) - 1);
-        if (newString == NULL) {
-          return NULL;
-        }
-        strncpy(newString, aType + 1, sizeof(aType) - 1);
-        const char *returnString = jbb_removeObjCTypeQualifiers(newString);
-        free(newString);
-        return returnString;
+- (NSString *)mz_stringByRemovingMethodEnodingQualifiers
+{
+    if ([self mz_isFirstCharacterCaseInsensitiveEqual:@"r"] ||
+        [self mz_isFirstCharacterCaseInsensitiveEqual:@"n"] ||
+        [self mz_isFirstCharacterCaseInsensitiveEqual:@"o"] ||
+        [self mz_isFirstCharacterEqual:@"V"]) {
+        return [self substringFromIndex:1];
     } else {
-        return aType;
+        return self;
     }
 }
 
-BOOL jbb_ObjCTypeStartsWith(const char *objCType, const char *targetChar) {
-    const char *newObjCType = jbb_removeObjCTypeQualifiers(objCType);
+@end
 
-    return newObjCType == NULL ? NO : strncmp(newObjCType, targetChar, 1);
-}
+BOOL mz_areObjCTypesEqual(NSString *argmuentType, const char *encodingType) {
 
-BOOL jbb_areObjCTypesEqual(const char *lhs, const char *rhs) {
-    const char *newLhs = jbb_removeObjCTypeQualifiers(lhs);
-    const char *newRhs = jbb_removeObjCTypeQualifiers(rhs);
-
-    if (newLhs == NULL || newRhs == NULL) {
-      return NO;
-    } else {
-      return strcmp(newLhs, newRhs) == 0;
-    }
+    NSString *encoding = [NSString stringWithUTF8String:encodingType];
+    return [[argmuentType mz_stringByRemovingMethodEnodingQualifiers] isEqualToString:[encoding mz_stringByRemovingMethodEnodingQualifiers]];
 }
 
 @implementation NSInvocation (Copy)
@@ -73,109 +69,108 @@ BOOL jbb_areObjCTypesEqual(const char *lhs, const char *rhs) {
         for (int i = 0; i < (numberOfArguments - 2); i++) {
             NSInteger index = i+2;
 
-            const char *typeForArg = [self.methodSignature getArgumentTypeAtIndex:index];
+            NSString *argumentType = [NSString stringWithUTF8String:[self.methodSignature getArgumentTypeAtIndex:index]];
 
-            // handle common types
-            if (jbb_areObjCTypesEqual(typeForArg, @encode(char))) {
+            if (mz_areObjCTypesEqual(argumentType, @encode(char))) {
                 char arg;
                 [self getArgument:&arg atIndex:index];
                 [invocation setArgument:&arg atIndex:index];
-            } else if (jbb_areObjCTypesEqual(typeForArg, @encode(unsigned char))) {
+            } else if (mz_areObjCTypesEqual(argumentType, @encode(unsigned char))) {
                 unsigned char arg;
                 [self getArgument:&arg atIndex:index];
                 [invocation setArgument:&arg atIndex:index];
-            } else if (jbb_areObjCTypesEqual(typeForArg, @encode(short))) {
+            } else if (mz_areObjCTypesEqual(argumentType, @encode(short))) {
                 short arg;
                 [self getArgument:&arg atIndex:index];
                 [invocation setArgument:&arg atIndex:index];
-            } else if (jbb_areObjCTypesEqual(typeForArg, @encode(unsigned short))) {
+            } else if (mz_areObjCTypesEqual(argumentType, @encode(unsigned short))) {
                 unsigned short arg;
                 [self getArgument:&arg atIndex:index];
                 [invocation setArgument:&arg atIndex:index];
-            } else if (jbb_areObjCTypesEqual(typeForArg, @encode(int))) {
+            } else if (mz_areObjCTypesEqual(argumentType, @encode(int))) {
                 int arg;
                 [self getArgument:&arg atIndex:index];
                 [invocation setArgument:&arg atIndex:index];
-            } else if (jbb_areObjCTypesEqual(typeForArg, @encode(unsigned int))) {
+            } else if (mz_areObjCTypesEqual(argumentType, @encode(unsigned int))) {
                 unsigned int arg;
                 [self getArgument:&arg atIndex:index];
                 [invocation setArgument:&arg atIndex:index];
-            } else if (jbb_areObjCTypesEqual(typeForArg, @encode(long))) {
+            } else if (mz_areObjCTypesEqual(argumentType, @encode(long))) {
                 long arg;
                 [self getArgument:&arg atIndex:index];
                 [invocation setArgument:&arg atIndex:index];
-            } else if (jbb_areObjCTypesEqual(typeForArg, @encode(unsigned long))) {
+            } else if (mz_areObjCTypesEqual(argumentType, @encode(unsigned long))) {
                 unsigned long arg;
                 [self getArgument:&arg atIndex:index];
                 [invocation setArgument:&arg atIndex:index];
-            } else if (jbb_areObjCTypesEqual(typeForArg, @encode(long long))) {
+            } else if (mz_areObjCTypesEqual(argumentType, @encode(long long))) {
                 long long arg;
                 [self getArgument:&arg atIndex:index];
                 [invocation setArgument:&arg atIndex:index];
-            } else if (jbb_areObjCTypesEqual(typeForArg, @encode(unsigned long long))) {
+            } else if (mz_areObjCTypesEqual(argumentType, @encode(unsigned long long))) {
                 unsigned long long arg;
                 [self getArgument:&arg atIndex:index];
                 [invocation setArgument:&arg atIndex:index];
-            } else if (jbb_areObjCTypesEqual(typeForArg, @encode(float))) {
+            } else if (mz_areObjCTypesEqual(argumentType, @encode(float))) {
                 float arg;
                 [self getArgument:&arg atIndex:index];
                 [invocation setArgument:&arg atIndex:index];
-            } else if (jbb_areObjCTypesEqual(typeForArg, @encode(double))) {
+            } else if (mz_areObjCTypesEqual(argumentType, @encode(double))) {
                 double arg;
                 [self getArgument:&arg atIndex:index];
                 [invocation setArgument:&arg atIndex:index];
-            } else if (jbb_areObjCTypesEqual(typeForArg, @encode(id))) {
+            } else if (mz_areObjCTypesEqual(argumentType, @encode(id))) {
                 char buffer[sizeof(intmax_t)];
                 [self getArgument:(void *)&buffer atIndex:i + 2];
                 [invocation setArgument:(void *)&buffer atIndex:i + 2];
-            } else if (jbb_areObjCTypesEqual(typeForArg, @encode(SEL))) {
+            } else if (mz_areObjCTypesEqual(argumentType, @encode(SEL))) {
                 SEL arg;
                 [self getArgument:&arg atIndex:index];
                 [invocation setArgument:&arg atIndex:index];
-            } else if (jbb_areObjCTypesEqual(typeForArg, @encode(Class))) {
+            } else if (mz_areObjCTypesEqual(argumentType, @encode(Class))) {
                 Class arg;
                 [self getArgument:&arg atIndex:index];
                 [invocation setArgument:&arg atIndex:index];
-            } else if (jbb_areObjCTypesEqual(typeForArg, @encode(char *))) {
+            } else if (mz_areObjCTypesEqual(argumentType, @encode(char *))) {
                 char *arg;
                 [self getArgument:&arg atIndex:index];
                 [invocation setArgument:&arg atIndex:index];
-            } else if (jbb_areObjCTypesEqual(typeForArg, @encode(NSRange))) {
+            } else if (mz_areObjCTypesEqual(argumentType, @encode(NSRange))) {
                 NSRange arg;
                 [self getArgument:&arg atIndex:index];
                 [invocation setArgument:&arg atIndex:index];
-            } else if (jbb_areObjCTypesEqual(typeForArg, @encode(CGPoint))) {
+            } else if (mz_areObjCTypesEqual(argumentType, @encode(CGPoint))) {
                 CGPoint arg;
                 [self getArgument:&arg atIndex:index];
                 [invocation setArgument:&arg atIndex:index];
-            } else if (jbb_areObjCTypesEqual(typeForArg, @encode(CGSize))) {
+            } else if (mz_areObjCTypesEqual(argumentType, @encode(CGSize))) {
                 CGSize arg;
                 [self getArgument:&arg atIndex:index];
                 [invocation setArgument:&arg atIndex:index];
-            } else if (jbb_areObjCTypesEqual(typeForArg, @encode(CGRect))) {
+            } else if (mz_areObjCTypesEqual(argumentType, @encode(CGRect))) {
                 CGRect arg;
                 [self getArgument:&arg atIndex:index];
                 [invocation setArgument:&arg atIndex:index];
-            } else if (jbb_ObjCTypeStartsWith(typeForArg, "^")) {
+            } else if ([argumentType mz_isFirstCharacterEqual:@"^"]) {
                 // generic pointer, including function pointers
 
                 void *arg;
                 [self getArgument:&arg atIndex:index];
                 [invocation setArgument:&arg atIndex:index];
-            } else if (jbb_ObjCTypeStartsWith(typeForArg, "@")) {
+            } else if ([argumentType mz_isFirstCharacterEqual:@"@"]) {
                 // most likely a block, handle like a function pointer
 
                 id arg;
                 [self getArgument:&arg atIndex:index];
                 [invocation setArgument:&arg atIndex:index];
             } else {
-                NSAssert1(false, @"Unhandled ObjC Type (%s)", typeForArg);
+                NSAssert1(false, @"Unhandled ObjC Type (%@)", argumentType);
                 return nil;
             }
-            
+
         }
     }
-    
+
     return invocation;
 }
 
