@@ -47,11 +47,13 @@
             NSGetSizeAndAlignment(argumentType, &argumentLength, NULL);
             
             void *buffer = malloc(argumentLength);
+          
+            if (buffer) {
+                [self getArgument:buffer atIndex:index];
+                [invocation setArgument:buffer atIndex:index];
             
-            [self getArgument:buffer atIndex:index];
-            [invocation setArgument:buffer atIndex:index];
-            
-            free(buffer);
+                free(buffer);
+            }
         }
     }
     
