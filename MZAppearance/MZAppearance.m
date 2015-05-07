@@ -75,7 +75,7 @@ static NSMutableDictionary *instanceOfClassesDictionary = nil;
     }
 }
 
-+ (id)appearanceForClass:(Class)aClass
++ (instancetype)appearanceForClass:(Class)aClass
 {
     static dispatch_once_t onceToken;
     
