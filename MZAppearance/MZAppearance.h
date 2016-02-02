@@ -25,6 +25,15 @@
 
 #import <Foundation/Foundation.h>
 
+//! Project version number for MZAppearance.
+FOUNDATION_EXPORT double MZAppearanceVersionNumber;
+
+//! Project version string for MZAppearance.
+FOUNDATION_EXPORT const unsigned char MZAppearanceVersionString[];
+
+// In this header, you should import all the public headers of your framework using statements like #import <MZAppearance/PublicHeader.h>
+
+
 #define MZ_APPEARANCE_SELECTOR UI_APPEARANCE_SELECTOR
 
 @protocol MZAppearance <NSObject>
