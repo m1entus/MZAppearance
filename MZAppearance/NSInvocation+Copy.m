@@ -66,7 +66,7 @@
 
 @end
 
-BOOL mz_areObjCTypesEqual(NSString *argmuentType, const char *encodingType) {
+static inline BOOL mz_areObjCTypesEqual(NSString *argmuentType, const char *encodingType) {
 
     NSString *encoding = [NSString stringWithUTF8String:encodingType];
     return [[argmuentType mz_stringByRemovingMethodEnodingQualifiers] isEqualToString:[encoding mz_stringByRemovingMethodEnodingQualifiers]];
